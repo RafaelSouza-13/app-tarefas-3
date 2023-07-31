@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:tarefas/data/task_dao.dart';
 
-Future<Database> dataBase() async {
+Future<Database> getDataBase() async {
   final String path = join(await getDatabasesPath(), 'task.db');
   return openDatabase(
     path,
