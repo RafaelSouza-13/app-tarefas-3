@@ -9,5 +9,5 @@ Curso três da formação em flutter da alura
 - [x] Persistência interna
 - [x] lidando com dados
 - [x] CRUD: ler arquivo
-- [ ] CRUD: criar, atualizar, deletar
-- [ ] Finalizando
+- [x] CRUD: criar, atualizar, deletar
+- [x] Finalizando

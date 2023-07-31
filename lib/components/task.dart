@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:tarefas/data/task_dao.dart';
 import 'difficulty.dart';
 
 class Task extends StatefulWidget {
   final String task;
   final String photo;
   final int hardShip;
+  int nivel = 0;
   Task(
       {required this.task,
       required this.photo,
       required this.hardShip,
       super.key});
 
-  int nivel = 0;
   @override
   State<Task> createState() => _TaskState();
 }
@@ -25,6 +26,20 @@ class _TaskState extends State<Task> {
       return false;
     }
     return true;
+  }
+
+  void corTask(int maestria) {
+    if (maestria == 1) {
+      cor = Colors.lime;
+    } else if (maestria == 2) {
+      cor = Colors.yellow;
+    } else if (maestria == 3) {
+      cor = Colors.orangeAccent;
+    } else if (maestria == 4) {
+      cor = Colors.red;
+    } else {
+      cor = Colors.black;
+    }
   }
 
   @override
@@ -105,6 +120,9 @@ class _TaskState extends State<Task> {
                       child: SizedBox(
                         height: 60,
                         child: ElevatedButton(
+                          onLongPress: () {
+                            TaskDao().delete(widget.task);
+                          },
                           onPressed: () {
                             double valor =
                                 (widget.nivel / widget.hardShip) / 10;
@@ -112,17 +130,7 @@ class _TaskState extends State<Task> {
                               setState(() {
                                 widget.nivel = 0;
                                 maestria++;
-                                if (maestria == 1) {
-                                  cor = Colors.lime;
-                                } else if (maestria == 2) {
-                                  cor = Colors.yellow;
-                                } else if (maestria == 3) {
-                                  cor = Colors.orangeAccent;
-                                } else if (maestria == 4) {
-                                  cor = Colors.red;
-                                } else {
-                                  cor = Colors.black;
-                                }
+                                corTask(maestria);
                               });
                             } else {
                               setState(() {

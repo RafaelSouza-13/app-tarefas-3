@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tarefas/data/task_inherited.dart';
+import 'package:tarefas/components/task.dart';
+import 'package:tarefas/data/task_dao.dart';
 
 class FormScreem extends StatefulWidget {
   const FormScreem({super.key, required this.taskContext});
@@ -24,10 +25,12 @@ class _FormScreemState extends State<FormScreem> {
 
   bool difficultyValidator(String? value) {
     if (value != null && value.isEmpty) {
+      return true;
+    }
+    if (value != null && value.isNotEmpty) {
       if (int.parse(value) > 5 || int.parse(value) < 1) {
         return true;
       }
-      return false;
     }
     return false;
   }
@@ -84,7 +87,7 @@ class _FormScreemState extends State<FormScreem> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        validator: (value) {
+                        validator: (String? value) {
                           if (difficultyValidator(value)) {
                             return 'Insira uma dificuldade entre 1 e 5';
                           }
@@ -107,7 +110,7 @@ class _FormScreemState extends State<FormScreem> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        validator: (value) {
+                        validator: (String? value) {
                           if (valueValidator(value)) {
                             return 'Insira uma url de imagem';
                           } else {
@@ -155,14 +158,14 @@ class _FormScreemState extends State<FormScreem> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        TaskInherited.of(widget.taskContext)!.newTask(
-                            nameControler.text,
-                            imageControler.text,
-                            int.parse(difficultyControler.text));
                         if (_formKey.currentState!.validate()) {
+                          TaskDao().save(Task(
+                              task: nameControler.text,
+                              photo: imageControler.text,
+                              hardShip: int.parse(difficultyControler.text)));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Ciando uma nova tarefa'),
+                              content: Text('Criando uma nova tarefa'),
                               backgroundColor: Colors.black87,
                               behavior: SnackBarBehavior.floating,
                               elevation: 150.0,
